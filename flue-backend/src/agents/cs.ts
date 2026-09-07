@@ -1,5 +1,6 @@
 "use agent";
 import {
+  useDataWriter,
   useDelivery,
   useInitialData,
   useModel,
@@ -12,6 +13,11 @@ export function CustomerSupport() {
   const { name } = useInitialData<{ name: string }>();
   // const message = useDelivery();
   const [mode, setMode] = usePersistentState<"fast" | "slow">("mode", "slow");
+  const writeProgress = useDataWriter("progress", {
+    schema: v.object({
+      stage: v.string(),
+    }),
+  });
   useModel(
     mode === "fast"
       ? "cloudflare/@cf/zai-org/glm-5.3-flash"
@@ -36,6 +42,7 @@ export function CustomerSupport() {
       };
     },
   });
+
   useTool({
     name: "add",
     description: "This is to add a and b",
@@ -47,6 +54,21 @@ export function CustomerSupport() {
       result: v.number(),
     }),
     async run({ data: { a, b } }) {
+      writeProgress({
+        stage: "Starting...",
+      });
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+
+      writeProgress({
+        stage: "Finishing...",
+      });
+
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+
+      writeProgress({
+        stage: "Done.",
+      });
+
       return {
         output: {
           result: a + b,
@@ -54,6 +76,7 @@ export function CustomerSupport() {
       };
     },
   });
+
   return `You are a customer support agent and now youre helping ${name}`;
 }
 
