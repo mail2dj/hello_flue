@@ -42,7 +42,6 @@ export function CustomerSupport() {
       };
     },
   });
-
   useTool({
     name: "add",
     description: "This is to add a and b",
@@ -74,6 +73,27 @@ export function CustomerSupport() {
           result: a + b,
         },
       };
+    },
+  });
+  useTool({
+    name: "durable_tool",
+    description: "This is to add a and b",
+    durable: true,
+    async run({ step }) {
+      console.log("starting tool");
+
+      console.log(Date.now());
+
+      const expensiveValue = await step.do("expensive_calc", async () => {
+        await new Promise((resolve) => setTimeout(resolve, 10000));
+        return 1;
+      });
+
+      console.log(Date.now());
+
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+
+      console.log(expensiveValue);
     },
   });
 
