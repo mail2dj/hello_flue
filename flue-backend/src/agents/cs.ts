@@ -1,10 +1,14 @@
 "use agent";
 import {
+  useAgentFinish,
+  useAgentStart,
   useDataWriter,
   useDelivery,
   useInitialData,
   useModel,
   usePersistentState,
+  useResponseFinish,
+  useResponseStart,
   useTool,
 } from "@flue/runtime";
 import * as v from "valibot";
@@ -95,6 +99,24 @@ export function CustomerSupport() {
 
       console.log(expensiveValue);
     },
+  });
+
+  useAgentStart(({ log }) => {
+    log.info("Delivery started");
+  });
+
+  useResponseStart(() => ({
+    startedAt: new Date().toISOString(),
+  }));
+
+  useResponseFinish(({ response }) => ({
+    usage: response.usage,
+  }));
+
+  useAgentFinish(({ response, log }) => {
+    log.info("Agent finished", {
+      toolCalls: response.toolCalls.length,
+    });
   });
 
   return `You are a customer support agent and now youre helping ${name}`;

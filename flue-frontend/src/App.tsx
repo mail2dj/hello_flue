@@ -172,6 +172,7 @@ function App() {
                 }
                 return null;
               })}
+              {JSON.stringify(message.metadata, null, 2)}
             </div>
           </article>
         ))}
