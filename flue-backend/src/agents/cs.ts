@@ -16,6 +16,11 @@ export function CustomerSupport() {
     mode === "fast"
       ? "cloudflare/@cf/zai-org/glm-5.3-flash"
       : "cloudflare/@cf/zai-org/glm-5.3",
+    {
+      compaction: {
+        model: "cloudflare/@cf/zai-org/glm-5.3-flash",
+      },
+    },
   );
   useTool({
     name: "set_mode",
