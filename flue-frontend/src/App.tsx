@@ -80,6 +80,22 @@ function App() {
                     </p>
                   );
                 }
+                if (part.type === "dynamic-tool") {
+                  return (
+                    <div>
+                      <strong>{part.toolName}</strong>
+                      <div>
+                        <span>
+                          {part.state === "input-available" ? "Running..." : ""}
+                          {part.state === "output-available" ? "Ran" : ""}
+                          {part.state === "output-error" ? "Error" : ""}
+                        </span>
+                        <pre>{JSON.stringify(part.input, null, 2)}</pre>
+                        <pre>{JSON.stringify(part.output, null, 2)}</pre>
+                      </div>
+                    </div>
+                  );
+                }
                 return null;
               })}
             </div>

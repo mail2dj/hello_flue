@@ -36,6 +36,24 @@ export function CustomerSupport() {
       };
     },
   });
+  useTool({
+    name: "add",
+    description: "This is to add a and b",
+    input: v.object({
+      a: v.number(),
+      b: v.number(),
+    }),
+    output: v.object({
+      result: v.number(),
+    }),
+    async run({ data: { a, b } }) {
+      return {
+        output: {
+          result: a + b,
+        },
+      };
+    },
+  });
   return `You are a customer support agent and now youre helping ${name}`;
 }
 
