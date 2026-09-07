@@ -4,12 +4,16 @@ import { Hello } from "./agents/hello.ts";
 
 const app = new Hono();
 
-// The route map: every agent, channel, and custom route is mounted here
-// explicitly. Talk to Hello with one POST per message:
-//
-//   curl -X POST http://localhost:5173/agents/hello/user-3 \
-//     -H 'content-type: application/json' \
-//     -d '{"kind":"user","body":"Tell me a joke."}'
-app.route("/hello/world", createAgentRouter(Hello));
+app.use("/agents/*", async (context, next) => {
+  const auth = context.req.header("Authorization");
+
+  if (!auth?.includes("TRUSTME")) {
+    return context.json({ error: "Not Allowed" }, 401);
+  }
+
+  await next();
+});
+
+app.route("/agents", createAgentRouter(Hello));
 
 export default app;
