@@ -12,6 +12,8 @@
     "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@flue/react": "^2.0.3",
+    "@flue/sdk": "^2.0.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
