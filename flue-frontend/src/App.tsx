@@ -8,7 +8,7 @@ function App() {
   const client = useMemo(
     () =>
       createFlueClient({
-        url: "http://localhost:5173/agents/user-1",
+        url: "http://localhost:5173/agents/nico",
         token: "TRUSTME",
       }),
     [],
@@ -24,7 +24,15 @@ function App() {
     const submittedMessage = message.trim();
     if (!submittedMessage) return;
 
-    await sendMessage(message);
+    await client.send({
+      message: {
+        kind: "user",
+        body: submittedMessage,
+      },
+      initialData: {
+        name: "nico",
+      },
+    });
 
     setMessage("");
   };
