@@ -11,6 +11,7 @@
 	"dependencies": {
 		"@flue/runtime": "^2.0.3",
 		"hono": "^4.7.0",
+		"just-bash": "^3.4.2",
 		"valibot": "^1.4.2"
 	},
 	"devDependencies": {
