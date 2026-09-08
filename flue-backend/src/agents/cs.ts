@@ -1,5 +1,11 @@
 "use agent";
-import { defineSkill, useModel, useSkill } from "@flue/runtime";
+import {
+  defineMcpConnection,
+  defineSkill,
+  useMcpConnection,
+  useModel,
+  useSkill,
+} from "@flue/runtime";
 import cavemanSkill from "../skills/caveman/SKILL.md";
 
 const pirateSkill = defineSkill({
@@ -17,8 +23,14 @@ const pirateSkill = defineSkill({
   `,
 });
 
+const cloudflareMcpConnection = defineMcpConnection({
+  name: "cloudflare_docs",
+  url: "https://docs.mcp.cloudflare.com/mcp",
+});
+
 export function CustomerSupport() {
   useSkill(cavemanSkill);
+  useMcpConnection(cloudflareMcpConnection);
   useSkill(pirateSkill);
   useModel("cloudflare/@cf/zai-org/glm-5.3-flash");
 
