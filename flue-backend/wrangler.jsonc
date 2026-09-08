@@ -15,5 +15,10 @@
   // https://flueframework.com/docs/guide/cloudflare-target/#managing-migrations
   "migrations": [
     { "tag": "v1", "new_sqlite_classes": ["FlueCustomerSupportAgent"] },
+    { "tag": "v2", "new_sqlite_classes": ["Sandbox"] },
   ],
+  "durable_objects": {
+    "bindings": [{ "class_name": "Sandbox", "name": "Sandbox" }],
+  },
+  "containers": [{ "class_name": "Sandbox", "image": "./Dockerfile" }],
 }
