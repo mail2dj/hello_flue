@@ -1,38 +1,14 @@
 "use agent";
-import {
-  defineMcpConnection,
-  defineSkill,
-  useMcpConnection,
-  useModel,
-  useSkill,
-} from "@flue/runtime";
-import cavemanSkill from "../skills/caveman/SKILL.md";
-
-const pirateSkill = defineSkill({
-  name: "pirate",
-  description:
-    "Speak like a pirate, use this when the user asks for a pirate explanation.",
-  instructions: `
-  Explain the subject using nautical metaphors and occasional
-  pirate expressions.
-
-  Keep all technical information accurate.
-  Keep the response easy to understand.
-  Do not turn every word into pirate slang.
-  Finish with "Arrr!"
-  `,
-});
-
-const cloudflareMcpConnection = defineMcpConnection({
-  name: "cloudflare_docs",
-  url: "https://docs.mcp.cloudflare.com/mcp",
-});
+import { useModel, useSubagent } from "@flue/runtime";
+import { optimisticSubAgent, skepticSubAgent } from "../sub-agents";
 
 export function CustomerSupport() {
-  useSkill(cavemanSkill);
-  useMcpConnection(cloudflareMcpConnection);
-  useSkill(pirateSkill);
   useModel("cloudflare/@cf/zai-org/glm-5.3-flash");
-
-  return `You are a customer support agent.`;
+  useSubagent(optimisticSubAgent);
+  useSubagent({
+    ...skepticSubAgent,
+    model: "cloudflare/@cf/deepseek-ai/deepseek-v4-pro-0813",
+    thinkingLevel: "high",
+  });
+  return `You are a advisor  agent. and you help users with ideas, and you analyze them with your team of advisors.`;
 }
