@@ -1,9 +1,10 @@
 "use agent";
-import { useModel, useSubagent } from "@flue/runtime";
+import { GeneralSubagent, useModel, useSubagent } from "@flue/runtime";
 import { optimisticSubAgent, skepticSubAgent } from "../sub-agents";
 
 export function CustomerSupport() {
-  useModel("cloudflare/@cf/zai-org/glm-5.3-flash");
+  useModel("cloudflare/@cf/zai-org/glm-5.3");
+  useSubagent(GeneralSubagent);
   useSubagent(optimisticSubAgent);
   useSubagent({
     ...skepticSubAgent,
