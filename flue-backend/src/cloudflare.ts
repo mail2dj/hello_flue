@@ -7,4 +7,6 @@
 //
 // https://flueframework.com/docs/guide/cloudflare-target/#extending-cloudflarets-entrypoint
 
-export { Sandbox } from '@cloudflare/sandbox';
+// export { Sandbox } from '@cloudflare/sandbox';
+
+export {};
