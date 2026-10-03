@@ -8,16 +8,15 @@ function App() {
   const client = useMemo(
     () =>
       createFlueClient({
-        url: "http://localhost:5173/agents/nico",
+        url: "http://localhost:5173/agents/doo_jeanee_love",
         token: "TRUSTME",
       }),
     [],
   );
 
-  const { sendMessage, messages, status } = useFlueAgent({
+  const { messages, status } = useFlueAgent({
     client,
   });
-
   const onSubmit: SubmitEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
@@ -30,7 +29,7 @@ function App() {
         body: submittedMessage,
       },
       initialData: {
-        name: "nico",
+        name: "doo_jeanee",
       },
     });
 
