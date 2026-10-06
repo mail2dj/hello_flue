@@ -8,7 +8,7 @@ function App() {
   const client = useMemo(
     () =>
       createFlueClient({
-        url: "http://localhost:5173/agents/doo_jeanee_love",
+        url: "http://localhost:5173/agents/doo_ji_nee",
         token: "TRUSTME",
       }),
     [],
@@ -36,7 +36,7 @@ function App() {
     setMessage("");
   };
 
-  const isThinking = status === "streaming" || status === "submitted";
+ const isThinking = status === "streaming" || status === "submitted";
   return (
     <main className="flex h-screen flex-col overflow-hidden bg-zinc-950 px-4 text-zinc-100">
       <section
@@ -78,6 +78,96 @@ function App() {
                       {part.text}
                     </p>
                   );
+                }
+                if (part.type === "dynamic-tool") {
+                  const status =
+                    part.state === "input-available"
+                      ? "Running"
+                      : part.state === "output-available"
+                        ? "Complete"
+                        : "Failed";
+
+                  return (
+                    <section
+                      className="my-3 w-full min-w-72 overflow-hidden rounded-xl border border-white/10 bg-zinc-900 shadow-sm shadow-black/20"
+                      key={part.toolCallId}
+                    >
+                      <header className="flex items-center justify-between gap-4 border-b border-white/10 px-4 py-3">
+                        <div className="flex min-w-0 items-center gap-2.5">
+                          <span
+                            aria-hidden="true"
+                            className="flex size-7 shrink-0 items-center justify-center rounded-md bg-white/5 text-zinc-400"
+                          >
+                            <svg
+                              className="size-3.5"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                d="m8.5 12 2 2 5-5M5 5h14v14H5z"
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="1.5"
+                              />
+                            </svg>
+                          </span>
+                          <strong className="truncate font-mono text-xs font-medium text-zinc-300">
+                            {part.toolName}
+                          </strong>
+                        </div>
+                        <span
+                          className={`shrink-0 text-[11px] font-medium ${
+                            part.state === "output-error"
+                              ? "text-red-300"
+                              : part.state === "output-available"
+                                ? "text-emerald-300"
+                                : "text-zinc-500"
+                          }`}
+                        >
+                          {status}
+                        </span>
+                      </header>
+
+                      <div className="grid gap-px bg-white/10 sm:grid-cols-2">
+                        <div className="min-w-0 bg-zinc-900 p-4">
+                          <p className="mb-2 text-[10px] font-medium uppercase tracking-widest text-zinc-500">
+                            Input
+                          </p>
+                          <pre className="overflow-x-auto whitespace-pre-wrap break-words font-mono text-xs leading-5 text-zinc-300">
+                            {JSON.stringify(part.input, null, 2)}
+                          </pre>
+                        </div>
+
+                        <div className="min-w-0 bg-zinc-900 p-4">
+                          <p className="mb-2 text-[10px] font-medium uppercase tracking-widest text-zinc-500">
+                            Output
+                          </p>
+                          {part.state === "input-available" && (
+                            <p className="animate-pulse text-xs text-zinc-500">
+                              Waiting for result…
+                            </p>
+                          )}
+                          {part.state === "output-available" && (
+                            <pre className="overflow-x-auto whitespace-pre-wrap break-words font-mono text-xs leading-5 text-emerald-200">
+                              {JSON.stringify(part.output, null, 2)}
+                            </pre>
+                          )}
+                          {part.state === "output-error" && (
+                            <p
+                              className="text-xs leading-5 text-red-300"
+                              role="alert"
+                            >
+                              {part.errorText}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </section>
+                  );
+                }
+                if (part.type === "data-progress") {
+                  return <div>{JSON.stringify(part.data, null, 2)}</div>;
                 }
                 return null;
               })}
