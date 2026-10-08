@@ -1,6 +1,6 @@
 import * as path from "node:path";
 
-let currentWorkspaceDir = "C:/Users/mail2/Documents/sandBox";
+let currentWorkspaceDir = "C:/Users/ztree/Documents/sandBox";
 
 export function getWorkspaceDir(): string {
   return currentWorkspaceDir;
